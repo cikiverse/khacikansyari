@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pendaftaran Workshop</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f5f5f5;
+            padding: 30px;
+        }
+
+        .container {
+            width: 400px;
+            margin: auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        #kartuKonfirmasi {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Workshop Web Programming</h2>
+
+        <form id="formDemo">
+
+            <!-- Nama -->
+            <label>Nama</label>
+            <input type="text" id="vNama">
+
+            <p id="errNama" class="error"></p>
+
+
+            <!-- Email -->
+            <label>Email</label>
+            <input type="text" id="vEmail">
+
+            <p id="errEmail" class="error"></p>
+
+
+            <!-- No HP -->
+            <label>No. HP</label>
+            <input type="text" id="vHp">
+
+            <p id="errHp" class="error"></p>
+
+
+            <!-- Sesi -->
+            <label>Sesi</label>
+            <select id="vSesi">
+                <option value="">-- Pilih Sesi --</option>
+                <option value="Pagi">Pagi</option>
+                <option value="Siang">Siang</option>
+                <option value="Malam">Malam</option>
+            </select>
+
+            <p id="errSesi" class="error"></p>
+
+
+            <!-- Persetujuan -->
+            <label>
+                <input type="checkbox" id="vSetuju">
+                Saya menyetujui pendaftaran workshop
+            </label>
+
+            <p id="errSetuju" class="error"></p>
+
+
+            <button type="submit">Daftar Sekarang</button>
+
+        </form>
+
+
+        <!-- Tempat kartu konfirmasi -->
+        <div id="kartuKonfirmasi"></div>
+
+    </div>
+
+
+    <script>
+
+        $(document).ready(function() {
+
+            $("#formDemo").submit(function(event) {
+
+                event.preventDefault();
+
+                // Mengambil data
+                var nama = $("#vNama").val().trim();
+                var email = $("#vEmail").val().trim();
+                var hp = $("#vHp").val().trim();
+                var sesi = $("#vSesi").val();
+                var setuju = $("#vSetuju").prop("checked");
+
+                // Bendera validasi
+                var valid = true;
+
+
+                // Hapus pesan error sebelumnya
+                $("#errNama").text("");
+                $("#errEmail").text("");
+                $("#errHp").text("");
+                $("#errSesi").text("");
+                $("#errSetuju").text("");
+
+
+                // Validasi nama
+                if (nama.length < 3) {
+                    $("#errNama").text("Nama minimal 3 karakter!");
+                    valid = false;
+                }
+
+
+                // Validasi email
+                if (email.indexOf("@") === -1 ||
+                    email.indexOf(".") === -1) {
+
+                    $("#errEmail").text("Email harus memiliki @ dan .");
+                    valid = false;
+                }
+
+
+                // Validasi nomor HP
+                if (hp !== "" && !$.isNumeric(hp)) {
+                    $("#errHp").text("No. HP harus berupa angka!");
+                    valid = false;
+                }
+
+
+                // Validasi sesi
+                if (sesi === "") {
+                    $("#errSesi").text("Sesi wajib dipilih!");
+                    valid = false;
+                }
+
+
+                // Validasi checkbox
+                if (!setuju) {
+                    $("#errSetuju").text(
+                        "Kamu harus menyetujui pendaftaran!"
+                    );
+                    valid = false;
+                }
+
+
+                // Jika semua data benar
+                if (valid) {
+
+                    // Kosongkan kartu sebelumnya
+                    $("#kartuKonfirmasi").empty();
+
+                    // Membuat kartu konfirmasi
+                    var kartu = $("<div>");
+
+                    $("<h3>")
+                        .text("Pendaftaran Berhasil!")
+                        .appendTo(kartu);
+
+                    $("<p>")
+                        .text("Nama: " + nama)
+                        .appendTo(kartu);
+
+                    $("<p>")
+                        .text("Email: " + email)
+                        .appendTo(kartu);
+
+                    $("<p>")
+                        .text("No. HP: " + hp)
+                        .appendTo(kartu);
+
+                    $("<p>")
+                        .text("Sesi: " + sesi)
+                        .appendTo(kartu);
+
+                    // Masukkan kartu ke halaman
+                    $("#kartuKonfirmasi").append(kartu);
+
+                    // Reset form
+                    $("#formDemo").trigger("reset");
+                }
+
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>
+
+
